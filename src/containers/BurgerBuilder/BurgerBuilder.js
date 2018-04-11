@@ -55,7 +55,8 @@ class BurgerBuilder extends Component {
         };
 
         // for each "key" in disabledInfo, returns true or false depending on whether
-        // disabledInfo[key] <= 0
+        // disabledInfo[key] <= 0, so will turn disabledInfo into something like
+        // {salad: true, cheese: false, meat: true, bacon: false}
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
@@ -66,7 +67,8 @@ class BurgerBuilder extends Component {
                 <BuildControls
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIngredientHandler}
-                    disabled={disabledInfo} />
+                    disabled={disabledInfo}
+                    price={this.state.totalPrice} />
             </Fragment>
         );
     }
