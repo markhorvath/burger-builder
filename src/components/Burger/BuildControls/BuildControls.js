@@ -16,7 +16,9 @@ const buildControls = (props) => (
                 key={ctrl.label}
                 label={ctrl.label}
         // ES6 function that executes props.ingredientAdded on the correct 'type'
-                added={() => props.ingredientAdded(ctrl.type)} />
+                added={() => props.ingredientAdded(ctrl.type)}
+                removed={() => props.ingredientRemoved(ctrl.type)}
+                disabled={props.disabled[ctrl.type]} />
         ))}
     </div>
 );
