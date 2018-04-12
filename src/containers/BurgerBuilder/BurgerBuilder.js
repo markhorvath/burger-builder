@@ -18,7 +18,23 @@ class BurgerBuilder extends Component {
             cheese: 0,
             meat: 0
         },
-        totalPrice: 4
+        totalPrice: 4,
+        purchaseable: false
+    }
+
+    updatePurchaseState () {
+        const ingredients = {
+            ...this.state.ingredients
+        };
+        console.log(ingredients);
+        const sum = Object.keys(ingredients)
+            .map(ingKey => {
+                return ingredients[ingKey];
+            })
+            .reduce((initialValueAndCumulativeValue, currentElementValue) => {
+                return initialValueAndCumulativeValue + currentElementValue;
+            }, 0); /* The 0 here is just setting the starting point of the inital value */
+        this.setState({purchaseable: sum > 0});
     }
 
     addIngredientHandler = (type) => {
