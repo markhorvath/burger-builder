@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import classes from './Modal.css';
+import Backdrop from '../Backdrop/Backdrop';
 
 const modal = (props) => (
+    <Fragment>
+    <Backdrop show={props.show} clicked={props.modalClosed} />
     <div
         className={classes.Modal}
         // Conditional styles depending on whether props.show (purchasing in state) is true
@@ -11,6 +14,7 @@ const modal = (props) => (
         }}>
         {props.children}
     </div>
+    </Fragment>
 )
 
 export default modal;
