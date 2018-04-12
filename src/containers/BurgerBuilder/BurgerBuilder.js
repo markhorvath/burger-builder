@@ -22,10 +22,10 @@ class BurgerBuilder extends Component {
         purchaseable: false
     }
 
-    updatePurchaseState () {
-        const ingredients = {
-            ...this.state.ingredients
-        };
+    /* The whole point of this seems to be to see if there are any ingredients
+    in the state (ie at least one must be above 0), this is a complicated way of doing this
+    but is good practice for learning about Object.keys(), .map and .reduce */
+    updatePurchaseState (ingredients) {
         console.log(ingredients);
         const sum = Object.keys(ingredients)
             .map(ingKey => {
@@ -47,6 +47,7 @@ class BurgerBuilder extends Component {
         const priceAddition = INGREDIENT_PRICES[type];
         const newPrice = priceAddition + this.state.totalPrice;
         this.setState({ingredients: updatedIngredients, totalPrice: newPrice});
+        this.updatePurchaseState(updatedIngredients);
     }
 
     removeIngredientHandler = (type) => {
@@ -62,6 +63,7 @@ class BurgerBuilder extends Component {
         const priceDeduction = INGREDIENT_PRICES[type];
         const newPrice = this.state.totalPrice - priceDeduction;
         this.setState({ingredients: updatedIngredients, totalPrice: newPrice});
+        this.updatePurchaseState(updatedIngredients);
     }
 
     render() {
@@ -84,6 +86,7 @@ class BurgerBuilder extends Component {
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disabledInfo}
+                    purchaseable={this.state.purchaseable}
                     price={this.state.totalPrice} />
             </Fragment>
         );
