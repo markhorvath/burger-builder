@@ -97,7 +97,24 @@
     border-radius: 20px;
 }
 
-.Salad {
+.Tomatoes {
+    width: 35%;
+    height: 90%;
+    margin-right: 3%;
+    margin-left: 3%;
+    margin-bottom: 2%;
+    background: #FF6347;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.Container {
+    width: 100%;
+    height: 4%;
+    margin: 2% auto;
+}
+
+.Lettuce {
     width: 85%;
     height: 7%;
     margin: 2% auto;
