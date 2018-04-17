@@ -3,6 +3,7 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 
 const INGREDIENT_PRICES = {
@@ -24,7 +25,8 @@ class BurgerBuilder extends Component {
         },
         totalPrice: 2,
         purchaseable: false,
-        purchasing: false
+        purchasing: false,
+        loading: false
     }
 
     /* The whole point of this seems to be to see if there are any ingredients
@@ -81,6 +83,7 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () => {
         // alert("you continue");
+        this.setState({loading: true});
         const order = {
             ingredients: this.state.ingredients,
             /* on a production, real world site, price should b calculated on server
@@ -100,9 +103,11 @@ class BurgerBuilder extends Component {
         // the .json at the end is something specifically for firebase backends
         axios.post('/orders.json', order)
             .then(response => {
+                this.setState({loading: false, purchasing: false});
                 console.log(response);
             })
             .catch(error => {
+                this.setState({loading: false, purchasing: false});
                 console.log(error);
             });
     }
@@ -119,15 +124,19 @@ class BurgerBuilder extends Component {
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
+        let orderSummary = <OrderSummary
+                        ingredients={this.state.ingredients}
+                        purchaseCancelled={this.purchaseCancelHandler}
+                        purchaseContinued={this.purchaseContinueHandler}
+                        price={this.state.totalPrice} />;
+        if (this.state.loading) {
+            orderSummary = <Spinner />;
+        }
 
         return (
             <Fragment>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-                    <OrderSummary
-                        ingredients={this.state.ingredients}
-                        purchaseCancelled={this.purchaseCancelHandler}
-                        purchaseContinued={this.purchaseContinueHandler}
-                        price={this.state.totalPrice} />
+                    {orderSummary}
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <BuildControls
