@@ -26,6 +26,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         axios.get('https://react-burger-12b1a.firebaseio.com/ingredients.json')
             .then(response => {
                 this.setState({ingredients: response.data})
@@ -88,34 +89,35 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        // alert("you continue");
-        this.setState({loading: true});
-        const order = {
-            ingredients: this.state.ingredients,
-            /* on a production, real world site, price should b calculated on server
-            to make sure user doesn't manipulate it in the browswer */
-            price: this.state.totalPrice,
-            customer: {
-                name: "mark horv",
-                address: {
-                    street: "1234 test st",
-                    zipCode: "99999",
-                    country: "USA"
-                },
-                email: "test@email.com"
-            },
-            deliveryMethod: "fastest"
-        }
-        // the .json at the end is something specifically for firebase backends
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({loading: false, purchasing: false});
-                console.log(response);
-            })
-            .catch(error => {
-                this.setState({loading: false, purchasing: false});
-                console.log(error);
-            });
+        // // alert("you continue");
+        // this.setState({loading: true});
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     /* on a production, real world site, price should b calculated on server
+        //     to make sure user doesn't manipulate it in the browswer */
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: "mark horv",
+        //         address: {
+        //             street: "1234 test st",
+        //             zipCode: "99999",
+        //             country: "USA"
+        //         },
+        //         email: "test@email.com"
+        //     },
+        //     deliveryMethod: "fastest"
+        // }
+        // // the .json at the end is something specifically for firebase backends
+        // axios.post('/orders.json', order)
+        //     .then(response => {
+        //         this.setState({loading: false, purchasing: false});
+        //         console.log(response);
+        //     })
+        //     .catch(error => {
+        //         this.setState({loading: false, purchasing: false});
+        //         console.log(error);
+        //     });
+        this.props.history.push('/checkout');
     }
 
     render() {
