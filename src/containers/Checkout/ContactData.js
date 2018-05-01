@@ -63,12 +63,21 @@ class ContactData extends Component {
     }
 
     orderHandler = (event) => {
+        event.preventDefault();
         this.setState({loading: true});
+        // again this is all done due to immutability of state, going through
+        // orderForm and extracting all the values for each identifier, then assigning it to
+        // the object formData which will then be passed in the const order
+        const formData = {};
+        for (let formElementIdentifier in this.state.orderForm) {
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        }
         const order = {
             ingredients: this.props.ingredients,
             /* on a production, real world site, price should b calculated on server
             to make sure user doesn't manipulate it in the browswer */
-            price: this.props.price
+            price: this.props.price,
+            orderData: formData
         }
         // the .json at the end is something specifically for firebase backends
         axios.post('/orders.json', order)
@@ -83,7 +92,7 @@ class ContactData extends Component {
                 this.setState({loading: false});
                 console.log(error);
             });
-        event.preventDefault();
+
     }
 
     inputChangedHandler = (event, inputIdentifier) => {
@@ -111,7 +120,7 @@ class ContactData extends Component {
         }
 
         let form = (
-                <form>
+                <form onSubmit={this.orderHandler}>
                     {formElements.map(formElement => (
                         <Input
                             key={formElement.id}
@@ -120,7 +129,7 @@ class ContactData extends Component {
                             value={formElement.config.value}
                             changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
                     ))}
-                    <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+                    <Button btnType="Success">ORDER</Button>
                 </form>
         );
         if (this.state.loading) {
