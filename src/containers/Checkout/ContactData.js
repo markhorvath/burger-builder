@@ -83,7 +83,8 @@ class ContactData extends Component {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                         ]
                     },
-                    value: '',
+                    value: 'fastest',
+                    validation: {required: false},
                     valid: true
                 }
         },
@@ -125,6 +126,11 @@ class ContactData extends Component {
 
     checkValidity(value, rules) {
         let isValid = true;
+
+        // if (!rules) {
+        //     return true;
+        // }
+
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
@@ -154,12 +160,13 @@ class ContactData extends Component {
         console.log(updatedFormElement);
 
         let formIsValid = true;
-        for (let inputIdentifiers in updatedOrderForm) {
+        for (let inputIdentifier in updatedOrderForm) {
             // this is checking that all valid properties in the updatedOrderForm object
             // are set to true AND that the formIsValid var 3 lines above is also true
             // because otherwise it would only set formIsValid to whatever the last
             // updatedOrderForm[inputIdentifier].valid in the loop is set to
             formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
+            console.log(formIsValid);
         }
 
         this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
