@@ -83,9 +83,11 @@ class ContactData extends Component {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                         ]
                     },
-                    value: ''
+                    value: '',
+                    valid: true
                 }
         },
+        formIsValid: false,
         loading: false
     }
 
@@ -150,7 +152,17 @@ class ContactData extends Component {
         updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement;
         console.log(updatedFormElement);
-        this.setState({orderForm: updatedOrderForm});
+
+        let formIsValid = true;
+        for (let inputIdentifiers in updatedOrderForm) {
+            // this is checking that all valid properties in the updatedOrderForm object
+            // are set to true AND that the formIsValid var 3 lines above is also true
+            // because otherwise it would only set formIsValid to whatever the last
+            // updatedOrderForm[inputIdentifier].valid in the loop is set to
+            formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
+        }
+
+        this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
     }
 
     render() {
@@ -177,7 +189,8 @@ class ContactData extends Component {
                             shouldValidate={formElement.config.validation}
                             changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
                     ))}
-                    <Button btnType="Success">ORDER</Button>
+                    <Button btnType="Success" disabled={!this.state.formIsValid}>
+                    ORDER</Button>
                 </form>
         );
         if (this.state.loading) {
