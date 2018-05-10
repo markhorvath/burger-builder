@@ -9,6 +9,11 @@ const input = (props) => {
         inputClasses.push(classes.Invalid);
     }
 
+    let validationError = null;
+    if (props.invalid && props.touched) {
+        validationError = <p className={classes.ValidationError}>Please enter a valid input</p>;
+    }
+
     switch (props.elementType) {
         case ('input'):
         // {...props} here will be whatever is uses in the <Input /> elements in ContactData.js
@@ -52,6 +57,7 @@ const input = (props) => {
         <div className={classes.Input}>
             <label className={classes.Label}>{props.label}</label>
             {inputElement}
+            {validationError}
         </div>
     );
 };
